@@ -1,0 +1,11 @@
+# Copy to /etc/systemd/system/. Scans every 5 minutes.
+[Unit]
+Description=defi-receipts scan timer
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Unit=receipts-scan.service
+
+[Install]
+WantedBy=timers.target

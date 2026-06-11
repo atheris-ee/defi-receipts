@@ -1,0 +1,44 @@
+# defi-receipts
+
+> A DeFi opportunity engine that grades itself on outcomes. A zero-dependency scanner finds
+> yield/arbitrage/funding/carry/liquidation/concentrated-LP opportunities across 8+ chains every
+> 5 minutes; a Postgres "realization" layer gives each opportunity a stable identity and tracks
+> it to its outcome (did the APY hold? did liquidity flee?); and the scanner reads those outcomes
+> back into its ranking, auto-demoting exit-liquidity traps. Includes a dashboard, a gated
+> Telegram alerter, a self-improving dev-agent loop, and first-class AI-agent operability. Research
+> and signal infrastructure — not an auto-trader, not financial advice.
+
+Key idea: stable_fp = md5(category | stable_stem(action))[:12] gives each opportunity an identity
+that survives its numbers changing, so the same opportunity can be tracked across thousands of
+scans. opportunity_realization (a Postgres matview keyed by stable_fp) is "the receipts":
+apy_retention, tvl_change_pct, days_obs, sightings, still_live. Trap = yield held while TVL fled
+≥50%; auto-demoted and never alerted.
+
+## Docs
+
+- [README](README.md): what it is, why it's different, quickstart, the fund thesis.
+- [Architecture](docs/ARCHITECTURE.md): the scan→archive→ingest→grade→rank→surface pipeline and the stable-identity spine.
+- [Vision](docs/VISION.md): the fund-built-on-receipts framing; what is proven vs. not yet proven; legal scope.
+- [Deploy](docs/DEPLOY.md): production install — scheduled scans, the realization layer, the alerter, systemd templates.
+- [Data dictionary](docs/DATA-DICTIONARY.md): every field in the report and the realization view.
+
+## For agents
+
+- [AGENTS.md](AGENTS.md): operating guide for AI coding agents — setup, validation, the identity invariant, house rules.
+- [Agent skill](agent/SKILL.md): a claude-code skill to run/query/extend the engine.
+- [Dev-agent mandate](agent/MANDATE.md): the evidence-first standard the self-improvement loop holds itself to.
+- [MCP server](integrations/mcp/README.md): query opportunities and their receipts programmatically.
+
+## Code entry points
+
+- [scanner/src/index.js](scanner/src/index.js): scan orchestration + realization feedback. Run: `node scanner/src/index.js scan`.
+- [realization/realization.sql](realization/realization.sql): the stable-identity functions and the receipts matview.
+- [dashboard/server.mjs](dashboard/server.mjs): the web UI and /data.json HTTP endpoint.
+- [alerting/defi-tg-alerts.mjs](alerting/defi-tg-alerts.mjs): the Telegram instant + digest lanes.
+
+## Constraints
+
+- Zero npm dependencies in scanner + dashboard (a deliberate supply-chain decision); only the Postgres ingest uses `pg`.
+- Postgres is SELECT-only in normal operation; realization_baselines is never pruned.
+- Any ranking change must be backed by a query against opportunity_realization proving the historical outcome it improves.
+- Capital execution is intentionally not included. This is research tooling, not investment advice.

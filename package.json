@@ -1,0 +1,24 @@
+{
+  "name": "defi-receipts",
+  "version": "1.0.0",
+  "description": "A DeFi opportunity engine that grades itself on what actually happened. Self-tracking scanner + Postgres realization layer + dashboard + gated Telegram alerts + agent operability.",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/atheris-ee/defi-receipts",
+  "repository": { "type": "git", "url": "https://github.com/atheris-ee/defi-receipts.git" },
+  "engines": { "node": ">=22" },
+  "keywords": [
+    "defi", "yield", "yield-farming", "arbitrage", "funding-rate", "concentrated-liquidity",
+    "defillama", "track-record", "realization", "trap-detection", "survivorship",
+    "mcp", "ai-agent", "trading-infrastructure", "ethereum", "solana", "base", "hyperliquid"
+  ],
+  "scripts": {
+    "scan": "node scanner/src/index.js scan",
+    "report": "node -e \"const r=require('./scanner/data/latest_report.json'); for(const s of (r.top_strategies||[]).slice(0,15)) console.log((s.tvlFlight!=null?'[TRAP] ':'')+s.category, s.expectedReturn, '|', s.action.slice(0,56))\"",
+    "dashboard": "node dashboard/server.mjs",
+    "archive": "bash ops/archive-scan.sh",
+    "alert:digest": "node alerting/defi-tg-alerts.mjs digest",
+    "mcp": "node integrations/mcp/server.mjs",
+    "check": "for f in scanner/src/*.js dashboard/*.mjs realization/*.mjs alerting/*.mjs integrations/mcp/*.mjs; do node --check \"$f\" || exit 1; done && echo ok"
+  }
+}

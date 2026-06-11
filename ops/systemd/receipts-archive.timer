@@ -1,0 +1,11 @@
+# Copy to /etc/systemd/system/. Fires one minute after each scan.
+[Unit]
+Description=defi-receipts archive timer
+
+[Timer]
+OnCalendar=*:1/5
+Persistent=true
+Unit=receipts-archive.service
+
+[Install]
+WantedBy=timers.target

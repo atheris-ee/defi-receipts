@@ -1,0 +1,23 @@
+{
+  "scan_interval_minutes": 5,
+  "min_apy_threshold": 10,
+  "min_arb_profit_bps": 20,
+  "min_tvl_usd": 100000,
+  "max_risk_score": 7,
+  "chains": ["ethereum", "arbitrum", "base", "solana", "bsc", "polygon", "avalanche", "optimism"],
+  "strategy_types": ["yield", "arb", "loop", "liquidity", "lending_spread"],
+  "alert_channels": ["log", "file"],
+  "cache_ttl_seconds": 300,
+  "apis": {
+    "defillama_yields": "https://yields.llama.fi/pools",
+    "defillama_protocols": "https://api.llama.fi/protocols",
+    "defillama_stablecoins": "https://stablecoins.llama.fi/stablecoins",
+    "dexscreener_latest": "https://api.dexscreener.com/latest/dex",
+    "jupiter_quote": "https://lite-api.jup.ag/swap/v1/quote",
+    "jupiter_tokens": "https://token.jup.ag/strict",
+    "oneinch_quote": "https://api.1inch.dev/swap/v6.0",
+    "aave_v3_rates": "https://aave-api-v2.aave.com/data/rates-history",
+    "compound_v3": "https://api.compound.finance/api/v2/market",
+    "coingecko_prices": "https://api.coingecko.com/api/v3/simple/price"
+  }
+}

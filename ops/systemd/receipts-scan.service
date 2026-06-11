@@ -1,0 +1,14 @@
+# Copy to /etc/systemd/system/ and edit paths. Pairs with receipts-scan.timer.
+[Unit]
+Description=defi-receipts opportunity scan
+After=network-online.target postgresql.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/defi-receipts
+EnvironmentFile=/opt/defi-receipts/.env
+ExecStart=/usr/bin/node scanner/src/index.js scan
+# Fire the instant Telegram lane after each scan (the '-' makes a failure non-fatal to the scan;
+# the alerter also always exits 0 in instant mode). Remove if you don't use Telegram.
+ExecStartPost=-/usr/bin/node alerting/defi-tg-alerts.mjs instant

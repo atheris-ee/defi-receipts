@@ -1,0 +1,11 @@
+# Copy to /etc/systemd/system/. Pairs with receipts-archive.timer (OnCalendar=*:1/5).
+# Snapshots the latest scan and ingests it into Postgres.
+[Unit]
+Description=defi-receipts archive + ingest
+After=postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/defi-receipts
+EnvironmentFile=/opt/defi-receipts/.env
+ExecStart=/usr/bin/bash ops/archive-scan.sh
