@@ -2,6 +2,12 @@
 
 **A DeFi opportunity engine that grades itself on what actually happened — not what it promised.**
 
+> [!NOTE]
+> **Status (July 2026):** this repo is a sanitized snapshot of the production engine as of
+> June 2026 and is not auto-synced. The live system has evolved since (adversarial pick
+> verification, decay priors, verdict-gated ranking). A refreshed release will follow once
+> the current measurement cycle completes.
+
 Most yield dashboards show you a 197% APY and move on. They never tell you that the pool's
 liquidity fled the next day, that the "headline" rate reverted within 72 hours, or that the
 same opportunity has died and resurrected six times this month. `defi-receipts` is built around
